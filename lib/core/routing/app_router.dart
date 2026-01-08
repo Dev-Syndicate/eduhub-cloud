@@ -8,6 +8,7 @@ import '../../features/announcements/presentation/pages/calendar_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/policies/presentation/pages/policies_page.dart';
+import '../../features/productivity/presentation/pages/productivity_page.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
 import '../../features/auth/presentation/bloc/login_bloc.dart';
@@ -111,6 +112,13 @@ class AppRouter {
                 child: PoliciesPage(),
               ),
             ),
+            GoRoute(
+              path: '/productivity',
+              name: 'productivity',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: ProductivityPage(),
+              ),
+            ),
           ],
         ),
       ],
@@ -178,6 +186,12 @@ class _MainShellState extends State<MainShell> {
       selectedIcon: Icons.policy,
       label: 'Policies',
       path: '/policies',
+    ),
+    NavDestination(
+      icon: Icons.check_circle_outline,
+      selectedIcon: Icons.check_circle,
+      label: 'Productivity',
+      path: '/productivity',
     ),
   ];
 
