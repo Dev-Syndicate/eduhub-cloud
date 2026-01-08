@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/announcements/presentation/pages/announcements_page.dart';
@@ -9,6 +12,13 @@ import '../../features/events/presentation/pages/create_event_page.dart';
 import '../../features/complaints/presentation/pages/complaints_page.dart';
 import '../../features/complaints/presentation/pages/complaint_detail_page.dart';
 import '../../features/complaints/presentation/pages/submit_complaint_page.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/forgot_password_page.dart';
+import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/auth_state.dart';
+import '../../features/auth/presentation/bloc/login_bloc.dart';
+import '../../features/auth/presentation/bloc/forgot_password_bloc.dart';
+import '../../features/auth/data/repositories/auth_repository.dart';
 import '../widgets/responsive_layout.dart';
 import '../theme/app_colors.dart';
 
@@ -105,6 +115,116 @@ class AppRouter {
   );
 }
 
+  static GoRouter router(AuthBloc authBloc) {
+    return GoRouter(
+      navigatorKey: _rootNavigatorKey,
+      initialLocation: '/dashboard',
+      debugLogDiagnostics: true,
+      redirect: (context, state) {
+        final authState = authBloc.state;
+        final isAuthenticated = authState is Authenticated;
+        final isAuthRoute = state.uri.path.startsWith('/login') ||
+            state.uri.path.startsWith('/forgot-password');
+
+        // Redirect to login if not authenticated and not on auth route
+        if (!isAuthenticated && !isAuthRoute) {
+          return '/login';
+        }
+
+        // Redirect to dashboard if authenticated and on auth route
+        if (isAuthenticated && isAuthRoute) {
+          return '/dashboard';
+        }
+
+        return null; // No redirect needed
+      },
+      refreshListenable: GoRouterRefreshStream(authBloc.stream),
+      routes: [
+        // Auth routes (outside shell)
+        GoRoute(
+          path: '/login',
+          name: 'login',
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: BlocProvider(
+              create: (_) => LoginBloc(
+                authRepository: context.read<AuthRepository>(),
+              ),
+              child: const LoginPage(),
+            ),
+          ),
+        ),
+        GoRoute(
+          path: '/forgot-password',
+          name: 'forgot-password',
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: BlocProvider(
+              create: (_) => ForgotPasswordBloc(
+                authRepository: context.read<AuthRepository>(),
+              ),
+              child: const ForgotPasswordPage(),
+            ),
+          ),
+        ),
+
+        // Main app routes (inside shell)
+        ShellRoute(
+          navigatorKey: _shellNavigatorKey,
+          builder: (context, state, child) {
+            return MainShell(child: child);
+          },
+          routes: [
+            GoRoute(
+              path: '/dashboard',
+              name: 'dashboard',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: DashboardPage(),
+              ),
+            ),
+            GoRoute(
+              path: '/announcements',
+              name: 'announcements',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: AnnouncementsPage(),
+              ),
+            ),
+            GoRoute(
+              path: '/calendar',
+              name: 'calendar',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: CalendarPage(),
+              ),
+            ),
+          ],
+        ),
+      ],
+      errorBuilder: (context, state) => Scaffold(
+        body: Center(
+          child: Text('Page not found: ${state.uri}'),
+        ),
+      ),
+    );
+  }
+}
+
+/// Stream that notifies GoRouter when auth state changes
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen(
+          (dynamic _) => notifyListeners(),
+        );
+  }
+
+  late final StreamSubscription<dynamic> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
+
 /// Main shell with navigation
 class MainShell extends StatefulWidget {
   final Widget child;
@@ -136,18 +256,6 @@ class _MainShellState extends State<MainShell> {
       selectedIcon: Icons.calendar_month,
       label: 'Calendar',
       path: '/calendar',
-    ),
-    NavDestination(
-      icon: Icons.event_outlined,
-      selectedIcon: Icons.event,
-      label: 'Events',
-      path: '/events',
-    ),
-    NavDestination(
-      icon: Icons.support_agent_outlined,
-      selectedIcon: Icons.support_agent,
-      label: 'Complaints',
-      path: '/complaints',
     ),
   ];
 
@@ -284,6 +392,53 @@ class _MainShellState extends State<MainShell> {
                   onTap: () => _onDestinationSelected(index),
                 );
               }).toList(),
+            ),
+          ),
+          // Logout button
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: expanded ? 12 : 8,
+              vertical: 8,
+            ),
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              child: InkWell(
+                onTap: () async {
+                  final authRepository = context.read<AuthRepository>();
+                  await authRepository.signOut();
+                },
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: expanded ? 16 : 12,
+                    vertical: 12,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: expanded
+                        ? MainAxisAlignment.start
+                        : MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.logout,
+                        size: 24,
+                        color: Colors.red,
+                      ),
+                      if (expanded) ...[ 
+                        const SizedBox(width: 12),
+                        Text(
+                          'Logout',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ],

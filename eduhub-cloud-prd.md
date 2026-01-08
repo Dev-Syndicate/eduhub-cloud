@@ -351,6 +351,7 @@ A single-window campus hub that:
 ## 6. Technical Architecture
 
 ### 6.1 Frontend & Application Layer (Flutter Web)
+
 - *Framework*: Flutter (Web)
 - *Language*: Dart
 - *UI System*:
@@ -384,7 +385,6 @@ A single-window campus hub that:
   - Flutter Form and TextFormField
   - flutter_form_builder
 
----
 ### 6.2 Google Ecosystem Integrations
 
 - *Google Workspace APIs*:
@@ -570,7 +570,7 @@ collections/
 
 ### 7.1 Student Daily Workflow
 
-1. **Login**: Google OAuth with campus email.
+1. **Login**: Email Password
 2. **Dashboard**: See today's classes, assignments due, and announcements.
 3. **Access Class**: Click on class → view lecture notes (Google Docs), assignment (Google Sheets), Chat space, Meet link.
 4. **Submit Assignment**: Upload file or complete Sheets form.
@@ -580,7 +580,7 @@ collections/
 
 ### 7.2 Teacher Daily Workflow
 
-1. **Login**: Google OAuth.
+1. **Login**: Email Password
 2. **Dashboard**: See enrolled students, assignment submissions, quiz responses.
 3. **Manage Course**: Create/edit assignments, share Docs/Slides, create Forms (quizzes).
 4. **Review Submissions**: See responses in Sheets, add scores and feedback.
@@ -589,7 +589,7 @@ collections/
 
 ### 7.3 HOD Daily Workflow
 
-1. **Login**: Google OAuth.
+1. **Login**: Email Password
 2. **Dashboard**: Departmental overview (courses, students, performance).
 3. **Monitor**: Check course analytics, identify struggling students, review complaints.
 4. **Approve**: Review and approve departmental events, club activities.
@@ -597,7 +597,7 @@ collections/
 
 ### 7.4 Admin Daily Workflow
 
-1. **Login**: Google OAuth.
+1. **Login**: Email Password
 2. **Dashboard**: Campus-wide overview (complaints, events, announcements).
 3. **Manage**: Create announcements, manage events, approve/decline requests.
 4. **Resolve**: Assign and track complaints, generate resolution reports.
@@ -760,49 +760,6 @@ collections/
 4. Users have basic digital literacy.
 
 ---
-
-## 15. Launch Plan & Timeline
-
-### Week 1–2: Design & Setup
-- Finalize user flows and wireframes.
-- Setup Firebase project, Firestore database.
-- Setup frontend and backend repositories.
-- Design UI/UX in Figma (reusable components).
-
-### Week 3–4: Core Development
-- Implement Firebase Auth (Google OAuth).
-- Build Academic Dashboard module (mockup integration).
-- Build Complaint Management module.
-- Implement Firestore CRUD operations.
-
-### Week 5: Additional Modules & Testing
-- Build Event Management module.
-- Build Announcement Feed.
-- Unit and integration testing.
-- Performance optimization.
-
-### Week 6: Deployment & Launch
-- Deploy frontend to Firebase Hosting.
-- Deploy backend to Cloud Run.
-- Configure custom domain.
-- Beta testing with 50–100 users.
-- Full launch and marketing.
-
----
-
-## 16. Appendix
-
-### A. Wireframes/UI Mockups
-(To be created in Figma and linked here)
-
-### B. API Endpoint Specifications
-(To be detailed in OpenAPI/Swagger documentation)
-
-### C. Database Security Rules
-(Firestore rules to be detailed in firebase.rules file)
-
-### D. Google Workspace API Integration Guides
-(Links to official Google documentation)
 
 ### E. Glossary
 - **HOD**: Head of Department (faculty administrator).
