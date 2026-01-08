@@ -7,6 +7,7 @@ import '../../features/announcements/presentation/pages/announcements_page.dart'
 import '../../features/announcements/presentation/pages/calendar_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
+import '../../features/policies/presentation/pages/policies_page.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
 import '../../features/auth/presentation/bloc/login_bloc.dart';
@@ -103,6 +104,13 @@ class AppRouter {
                 child: CalendarPage(),
               ),
             ),
+            GoRoute(
+              path: '/policies',
+              name: 'policies',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: PoliciesPage(),
+              ),
+            ),
           ],
         ),
       ],
@@ -164,6 +172,12 @@ class _MainShellState extends State<MainShell> {
       selectedIcon: Icons.calendar_month,
       label: 'Calendar',
       path: '/calendar',
+    ),
+    NavDestination(
+      icon: Icons.policy_outlined,
+      selectedIcon: Icons.policy,
+      label: 'Policies',
+      path: '/policies',
     ),
   ];
 
