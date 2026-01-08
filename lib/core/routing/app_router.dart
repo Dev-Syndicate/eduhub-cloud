@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,12 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/announcements/presentation/pages/announcements_page.dart';
 import '../../features/announcements/presentation/pages/calendar_page.dart';
-import '../../features/events/presentation/pages/events_page.dart';
-import '../../features/events/presentation/pages/event_detail_page.dart';
-import '../../features/events/presentation/pages/create_event_page.dart';
-import '../../features/complaints/presentation/pages/complaints_page.dart';
-import '../../features/complaints/presentation/pages/complaint_detail_page.dart';
-import '../../features/complaints/presentation/pages/submit_complaint_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -30,90 +23,6 @@ class AppRouter {
       GlobalKey<NavigatorState>(debugLabel: 'root');
   static final GlobalKey<NavigatorState> _shellNavigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'shell');
-
-  static final GoRouter router = GoRouter(
-    navigatorKey: _rootNavigatorKey,
-    initialLocation: '/dashboard',
-    debugLogDiagnostics: true,
-    routes: [
-      ShellRoute(
-        navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) {
-          return MainShell(child: child);
-        },
-        routes: [
-          GoRoute(
-            path: '/dashboard',
-            name: 'dashboard',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: DashboardPage(),
-            ),
-          ),
-          GoRoute(
-            path: '/announcements',
-            name: 'announcements',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: AnnouncementsPage(),
-            ),
-          ),
-          GoRoute(
-            path: '/calendar',
-            name: 'calendar',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: CalendarPage(),
-            ),
-          ),
-          // Events routes
-          GoRoute(
-            path: '/events',
-            name: 'events',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: EventsPage(),
-            ),
-          ),
-          // Complaints routes
-          GoRoute(
-            path: '/complaints',
-            name: 'complaints',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: ComplaintsPage(),
-            ),
-          ),
-        ],
-      ),
-      // Routes outside shell (full-screen pages)
-      GoRoute(
-        path: '/events/create',
-        name: 'create-event',
-        builder: (context, state) => const CreateEventPage(),
-      ),
-      GoRoute(
-        path: '/events/:id',
-        name: 'event-detail',
-        builder: (context, state) => EventDetailPage(
-          eventId: state.pathParameters['id']!,
-        ),
-      ),
-      GoRoute(
-        path: '/complaints/submit',
-        name: 'submit-complaint',
-        builder: (context, state) => const SubmitComplaintPage(),
-      ),
-      GoRoute(
-        path: '/complaints/:id',
-        name: 'complaint-detail',
-        builder: (context, state) => ComplaintDetailPage(
-          complaintId: state.pathParameters['id']!,
-        ),
-      ),
-    ],
-    errorBuilder: (context, state) => Scaffold(
-      body: Center(
-        child: Text('Page not found: ${state.uri}'),
-      ),
-    ),
-  );
-}
 
   static GoRouter router(AuthBloc authBloc) {
     return GoRouter(
@@ -223,7 +132,6 @@ class GoRouterRefreshStream extends ChangeNotifier {
     super.dispose();
   }
 }
-
 
 /// Main shell with navigation
 class MainShell extends StatefulWidget {
@@ -424,7 +332,7 @@ class _MainShellState extends State<MainShell> {
                         size: 24,
                         color: Colors.red,
                       ),
-                      if (expanded) ...[ 
+                      if (expanded) ...[
                         const SizedBox(width: 12),
                         Text(
                           'Logout',
