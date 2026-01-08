@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 /// Application theme configuration
@@ -15,11 +16,11 @@ class AppTheme {
           error: AppColors.error,
         ),
         scaffoldBackgroundColor: AppColors.background,
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: false,
-          titleTextStyle: TextStyle(
+          titleTextStyle: GoogleFonts.poppins(
             color: AppColors.textPrimary,
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -66,7 +67,7 @@ class AppTheme {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            textStyle: const TextStyle(
+            textStyle: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -80,7 +81,7 @@ class AppTheme {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            textStyle: const TextStyle(
+            textStyle: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -89,7 +90,7 @@ class AppTheme {
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             foregroundColor: AppColors.primaryColor,
-            textStyle: const TextStyle(
+            textStyle: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -98,7 +99,7 @@ class AppTheme {
         chipTheme: ChipThemeData(
           backgroundColor: AppColors.surfaceVariant,
           selectedColor: AppColors.primaryLight,
-          labelStyle: const TextStyle(fontSize: 14),
+          labelStyle: GoogleFonts.poppins(fontSize: 14),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
@@ -108,49 +109,51 @@ class AppTheme {
           color: AppColors.divider,
           thickness: 1,
         ),
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
-          displayMedium: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
-          headlineLarge: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-          ),
-          headlineMedium: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-          ),
-          titleLarge: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-          ),
-          titleMedium: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary,
-          ),
-          bodyLarge: TextStyle(
-            fontSize: 16,
-            color: AppColors.textPrimary,
-          ),
-          bodyMedium: TextStyle(
-            fontSize: 14,
-            color: AppColors.textSecondary,
-          ),
-          labelLarge: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+        textTheme: GoogleFonts.poppinsTextTheme(
+          const TextTheme(
+            displayLarge: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+            displayMedium: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+            headlineLarge: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+            headlineMedium: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+            titleLarge: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+            titleMedium: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textPrimary,
+            ),
+            bodyLarge: TextStyle(
+              fontSize: 16,
+              color: AppColors.textPrimary,
+            ),
+            bodyMedium: TextStyle(
+              fontSize: 14,
+              color: AppColors.textSecondary,
+            ),
+            labelLarge: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
           ),
         ),
       );
