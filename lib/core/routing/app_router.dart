@@ -11,6 +11,12 @@ import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
 import '../../features/auth/presentation/bloc/login_bloc.dart';
 import '../../features/auth/presentation/bloc/forgot_password_bloc.dart';
+import '../../features/policies/presentation/pages/policies_page.dart';
+import '../../features/policies/presentation/bloc/policies_bloc.dart';
+import '../../features/policies/data/repositories/policies_repository.dart';
+import '../../features/tasks/presentation/pages/tasks_page.dart';
+import '../../features/tasks/presentation/bloc/tasks_bloc.dart';
+import '../../features/tasks/data/repositories/tasks_repository.dart';
 import '../../features/auth/data/repositories/auth_repository.dart';
 import '../widgets/responsive_layout.dart';
 import '../theme/app_colors.dart';
@@ -103,6 +109,30 @@ class AppRouter {
                 child: CalendarPage(),
               ),
             ),
+            GoRoute(
+              path: '/policies',
+              name: 'policies',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: BlocProvider(
+                  create: (_) => PoliciesBloc(
+                    repository: PoliciesRepository(),
+                  ),
+                  child: const PoliciesPage(),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: '/tasks',
+              name: 'tasks',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: BlocProvider(
+                  create: (_) => TasksBloc(
+                    repository: TasksRepository(),
+                  ),
+                  child: const TasksPage(),
+                ),
+              ),
+            ),
           ],
         ),
       ],
@@ -146,7 +176,7 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _selectedIndex = 0;
 
-  final List<NavDestination> _destinations = [
+  static final List<NavDestination> _destinations = [
     NavDestination(
       icon: Icons.dashboard_outlined,
       selectedIcon: Icons.dashboard,
@@ -160,10 +190,22 @@ class _MainShellState extends State<MainShell> {
       path: '/announcements',
     ),
     NavDestination(
-      icon: Icons.calendar_month_outlined,
-      selectedIcon: Icons.calendar_month,
+      icon: Icons.calendar_today_outlined,
+      selectedIcon: Icons.calendar_today,
       label: 'Calendar',
       path: '/calendar',
+    ),
+    NavDestination(
+      icon: Icons.description_outlined,
+      selectedIcon: Icons.description,
+      label: 'Policies',
+      path: '/policies',
+    ),
+    NavDestination(
+      icon: Icons.task_outlined,
+      selectedIcon: Icons.task,
+      label: 'Tasks',
+      path: '/tasks',
     ),
   ];
 
