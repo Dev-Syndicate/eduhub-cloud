@@ -171,6 +171,39 @@ class LoginPage extends StatelessWidget {
               isLoading: isLoading,
               isExpanded: true,
             ),
+            const SizedBox(height: 24),
+
+            // Divider
+            Row(
+              children: [
+                Expanded(child: Divider(color: AppColors.border)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'OR',
+                    style: TextStyle(color: AppColors.textSecondary),
+                  ),
+                ),
+                Expanded(child: Divider(color: AppColors.border)),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // Google Sign In button
+            AppButton(
+              label: 'Continue with Google',
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      context
+                          .read<LoginBloc>()
+                          .add(const LoginGoogleSubmitted());
+                    },
+              isLoading: isLoading,
+              isExpanded: true,
+              variant: AppButtonVariant.outline,
+              icon: Icons.public, // Using public icon as proxy for Google/Web
+            ),
           ],
         );
       },

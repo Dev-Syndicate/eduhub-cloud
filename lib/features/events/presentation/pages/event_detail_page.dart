@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/models/event_model.dart';
 import '../../../../core/repositories/event_repository.dart';
+import '../../../../core/services/calendar_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/status_chip.dart';
@@ -55,12 +56,24 @@ class _EventDetailPageState extends State<EventDetailPage> {
         _isRegistering = false;
       });
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Successfully registered for event!'),
-            backgroundColor: AppColors.success,
-          ),
-        );
+        // Add to Calendar
+        try {
+          await CalendarService().addToCalendar(updatedEvent);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Registered and added to Google Calendar!'),
+              backgroundColor: AppColors.success,
+            ),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  'Registered, but failed to add to Calendar: ${e.toString().replaceAll("Exception: ", "")}'),
+              backgroundColor: AppColors.warning,
+            ),
+          );
+        }
       }
     } catch (e) {
       setState(() => _isRegistering = false);

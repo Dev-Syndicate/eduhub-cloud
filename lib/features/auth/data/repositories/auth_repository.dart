@@ -23,7 +23,8 @@ class AuthRepository {
     if (firebaseUser == null) return null;
 
     try {
-      final doc = await _firestore.collection('users').doc(firebaseUser.uid).get();
+      final doc =
+          await _firestore.collection('users').doc(firebaseUser.uid).get();
       if (!doc.exists) return null;
 
       return UserModel.fromFirestore(doc);
@@ -38,7 +39,8 @@ class AuthRepository {
       if (firebaseUser == null) return null;
 
       try {
-        final doc = await _firestore.collection('users').doc(firebaseUser.uid).get();
+        final doc =
+            await _firestore.collection('users').doc(firebaseUser.uid).get();
         if (!doc.exists) return null;
 
         return UserModel.fromFirestore(doc);
@@ -62,7 +64,8 @@ class AuthRepository {
       );
 
       // Fetch user data from Firestore
-      final doc = await _firestore.collection('users').doc(firebaseUser.uid).get();
+      final doc =
+          await _firestore.collection('users').doc(firebaseUser.uid).get();
 
       if (!doc.exists) {
         // User authenticated but no Firestore document
@@ -74,6 +77,46 @@ class AuthRepository {
       }
 
       return UserModel.fromFirestore(doc);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Sign in with Google
+  /// Returns the UserModel if successful
+  Future<UserModel> signInWithGoogle() async {
+    try {
+      // Sign in with Google via AuthService
+      final firebaseUser = await _authService.signInWithGoogle();
+
+      // Check if user exists in Firestore
+      final doc =
+          await _firestore.collection('users').doc(firebaseUser.uid).get();
+
+      if (doc.exists) {
+        return UserModel.fromFirestore(doc);
+      } else {
+        // Create new user record for Google Sign-In user
+        final now = DateTime.now();
+        final newUser = UserModel(
+          id: firebaseUser.uid,
+          email: firebaseUser.email ?? '',
+          name: firebaseUser.displayName ?? 'User',
+          role: UserRole.student, // Default role
+          department: null,
+          phoneNumber: firebaseUser.phoneNumber,
+          enrolledCourses: [],
+          taughtCourses: [],
+          createdAt: now,
+          updatedAt: now,
+        );
+
+        await _firestore
+            .collection('users')
+            .doc(firebaseUser.uid)
+            .set(newUser.toFirestore());
+        return newUser;
+      }
     } catch (e) {
       rethrow;
     }

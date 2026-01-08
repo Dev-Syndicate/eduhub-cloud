@@ -16,6 +16,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginEmailChanged>(_onEmailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
+    on<LoginGoogleSubmitted>(_onGoogleSubmitted);
   }
 
   /// Handle email changed
@@ -87,6 +88,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         email: currentState.email,
         password: currentState.password,
       ));
+    }
+  }
+
+  /// Handle Google login submission
+  Future<void> _onGoogleSubmitted(
+    LoginGoogleSubmitted event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(const LoginLoading());
+
+    try {
+      await _authRepository.signInWithGoogle();
+      emit(const LoginSuccess());
+    } catch (e) {
+      emit(LoginFailure(e.toString().replaceAll('Exception: ', '')));
+      emit(const LoginInitial());
     }
   }
 }

@@ -1,9 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis/calendar/v3.dart';
 
 /// Firebase Authentication Service
 /// Handles all Firebase Auth operations for email/password authentication
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId:
+        '209029797188-2e0e87f5tfgf0m1h1qdm3gao0hdilfu0.apps.googleusercontent.com',
+    scopes: [CalendarApi.calendarEventsScope],
+  );
 
   /// Get current Firebase user
   User? get currentUser => _auth.currentUser;
@@ -30,6 +37,34 @@ class AuthService {
       return userCredential.user!;
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
+    }
+  }
+
+  /// Sign in with Google
+  Future<User> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        throw Exception('Sign in cancelled by user');
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await _auth.signInWithCredential(credential);
+      if (userCredential.user == null) {
+        throw Exception('Sign in failed: No user returned');
+      }
+
+      return userCredential.user!;
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthException(e);
+    } catch (e) {
+      throw Exception('Google sign in failed: $e');
     }
   }
 
@@ -95,7 +130,8 @@ class AuthService {
         message = 'Password is too weak. Please use a stronger password.';
         break;
       case 'operation-not-allowed':
-        message = 'Email/password sign-in is not enabled. Please contact support.';
+        message =
+            'Email/password sign-in is not enabled. Please contact support.';
         break;
       case 'too-many-requests':
         message = 'Too many failed attempts. Please try again later.';
@@ -112,4 +148,7 @@ class AuthService {
 
     return Exception(message);
   }
+
+  /// Get the Google Sign In instance (for other services)
+  GoogleSignIn get googleSignIn => _googleSignIn;
 }
