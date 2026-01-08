@@ -26,12 +26,11 @@ class AppTheme {
           ),
           iconTheme: IconThemeData(color: AppColors.textPrimary),
         ),
-        cardTheme: CardTheme(
-          color: AppColors.surface,
+        cardTheme: const CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: const BorderSide(color: AppColors.border, width: 1),
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            side: BorderSide(color: AppColors.border, width: 1),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(

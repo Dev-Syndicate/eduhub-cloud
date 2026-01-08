@@ -3,8 +3,8 @@ class Validators {
   Validators._();
 
   /// Validate email format
-  static String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
+  static String? validateEmail(String? email) {
+    if (email == null || email.trim().isEmpty) {
       return 'Email is required';
     }
 
@@ -12,7 +12,7 @@ class Validators {
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
 
-    if (!emailRegex.hasMatch(value)) {
+    if (!emailRegex.hasMatch(email.trim())) {
       return 'Please enter a valid email address';
     }
 
@@ -36,6 +36,19 @@ class Validators {
     if (value == null || value.trim().isEmpty) {
       return '${fieldName ?? 'This field'} is required';
     }
+    return null;
+  }
+
+  /// Validate password
+  static String? validatePassword(String? password) {
+    if (password == null || password.isEmpty) {
+      return 'Password is required';
+    }
+
+    if (password.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+
     return null;
   }
 

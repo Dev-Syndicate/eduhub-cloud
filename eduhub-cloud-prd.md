@@ -350,25 +350,55 @@ A single-window campus hub that:
 
 ## 6. Technical Architecture
 
-### 6.1 Frontend Stack
-- **Framework**: React 18+ / Next.js
-- **UI Library**: Material-UI or Tailwind CSS
-- **State Management**: Redux or Zustand
-- **HTTP Client**: Axios or Fetch API
-- **Real-time Updates**: Firebase Realtime Database listeners or Firestore snapshots
-- **Calendar Component**: React Big Calendar or FullCalendar
-- **Charts/Analytics**: Chart.js or Recharts
-- **Google Integration**: Google APIs Client Library (JavaScript)
+### 6.1 Frontend & Application Layer (Flutter Web)
 
-### 6.2 Backend Stack
-- **Framework**: FastAPI (Python) or Node.js + Express
-- **Database**: Firestore (Firebase)
-- **Authentication**: Firebase Authentication (Google OAuth for campus SSO)
-- **APIs**:
-  - Google Workspace APIs: Calendar, Docs, Sheets, Slides, Drive, Forms, Chat, Meet
-  - Gemini API (for AI-powered features like smart complaint summaries, event desc generation)
-- **Background Jobs**: Celery (Python) or Bull (Node.js) for async tasks (e.g., report generation, notifications)
-- **Deployment**: Firebase Hosting (Frontend) + Cloud Run / App Engine (Backend)
+- *Framework*: Flutter (Web)
+- *Language*: Dart
+- *UI System*:
+  - Flutter Material 3 (Google Design System)
+  - Fully responsive layouts using LayoutBuilder and MediaQuery
+
+- *State Management*:
+  - Riverpod (recommended)
+  - Bloc or Provider (alternatives)
+
+- *Routing & Navigation*:
+  - go_router for web-friendly routing and deep linking
+
+- *HTTP & API Communication*:
+  - Dart http or dio package
+  - Direct REST calls to Google APIs
+
+- *Real-time Data & Sync*:
+  - Firebase Firestore streams
+  - Firebase Realtime Database listeners
+
+- *Calendar & Scheduling*:
+  - syncfusion_flutter_calendar
+  - table_calendar
+
+- *Charts & Analytics*:
+  - fl_chart
+  - syncfusion_flutter_charts
+
+- *Forms & Validation*:
+  - Flutter Form and TextFormField
+  - flutter_form_builder
+
+### 6.2 Google Ecosystem Integrations
+
+- *Google Workspace APIs*:
+  - Calendar (events & scheduling)
+  - Drive (file management)
+  - Docs & Sheets (reports & records)
+  - Forms (surveys & feedback)
+  - Chat & Meet (communication)
+
+- *AI & Intelligence*:
+  - Gemini API
+    - Smart complaint summarization
+    - Event and announcement generation
+    - Automated insights and recommendations
 
 ### 6.3 Database Schema (Firestore)
 
@@ -540,7 +570,7 @@ collections/
 
 ### 7.1 Student Daily Workflow
 
-1. **Login**: Google OAuth with campus email.
+1. **Login**: Email Password
 2. **Dashboard**: See today's classes, assignments due, and announcements.
 3. **Access Class**: Click on class → view lecture notes (Google Docs), assignment (Google Sheets), Chat space, Meet link.
 4. **Submit Assignment**: Upload file or complete Sheets form.
@@ -550,7 +580,7 @@ collections/
 
 ### 7.2 Teacher Daily Workflow
 
-1. **Login**: Google OAuth.
+1. **Login**: Email Password
 2. **Dashboard**: See enrolled students, assignment submissions, quiz responses.
 3. **Manage Course**: Create/edit assignments, share Docs/Slides, create Forms (quizzes).
 4. **Review Submissions**: See responses in Sheets, add scores and feedback.
@@ -559,7 +589,7 @@ collections/
 
 ### 7.3 HOD Daily Workflow
 
-1. **Login**: Google OAuth.
+1. **Login**: Email Password
 2. **Dashboard**: Departmental overview (courses, students, performance).
 3. **Monitor**: Check course analytics, identify struggling students, review complaints.
 4. **Approve**: Review and approve departmental events, club activities.
@@ -567,7 +597,7 @@ collections/
 
 ### 7.4 Admin Daily Workflow
 
-1. **Login**: Google OAuth.
+1. **Login**: Email Password
 2. **Dashboard**: Campus-wide overview (complaints, events, announcements).
 3. **Manage**: Create announcements, manage events, approve/decline requests.
 4. **Resolve**: Assign and track complaints, generate resolution reports.
@@ -730,49 +760,6 @@ collections/
 4. Users have basic digital literacy.
 
 ---
-
-## 15. Launch Plan & Timeline
-
-### Week 1–2: Design & Setup
-- Finalize user flows and wireframes.
-- Setup Firebase project, Firestore database.
-- Setup frontend and backend repositories.
-- Design UI/UX in Figma (reusable components).
-
-### Week 3–4: Core Development
-- Implement Firebase Auth (Google OAuth).
-- Build Academic Dashboard module (mockup integration).
-- Build Complaint Management module.
-- Implement Firestore CRUD operations.
-
-### Week 5: Additional Modules & Testing
-- Build Event Management module.
-- Build Announcement Feed.
-- Unit and integration testing.
-- Performance optimization.
-
-### Week 6: Deployment & Launch
-- Deploy frontend to Firebase Hosting.
-- Deploy backend to Cloud Run.
-- Configure custom domain.
-- Beta testing with 50–100 users.
-- Full launch and marketing.
-
----
-
-## 16. Appendix
-
-### A. Wireframes/UI Mockups
-(To be created in Figma and linked here)
-
-### B. API Endpoint Specifications
-(To be detailed in OpenAPI/Swagger documentation)
-
-### C. Database Security Rules
-(Firestore rules to be detailed in firebase.rules file)
-
-### D. Google Workspace API Integration Guides
-(Links to official Google documentation)
 
 ### E. Glossary
 - **HOD**: Head of Department (faculty administrator).
