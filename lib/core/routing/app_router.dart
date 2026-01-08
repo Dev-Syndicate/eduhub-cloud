@@ -20,6 +20,9 @@ import '../../features/tasks/data/repositories/tasks_repository.dart';
 import '../../features/auth/data/repositories/auth_repository.dart';
 import '../widgets/responsive_layout.dart';
 import '../theme/app_colors.dart';
+import '../../features/public/presentation/pages/landing_page.dart';
+import '../../features/public/presentation/pages/privacy_policy_page.dart';
+import '../../features/public/presentation/pages/terms_of_service_page.dart';
 
 /// App router configuration using go_router
 class AppRouter {
@@ -38,12 +41,25 @@ class AppRouter {
       redirect: (context, state) {
         final authState = authBloc.state;
         final isAuthenticated = authState is Authenticated;
-        final isAuthRoute = state.uri.path.startsWith('/login') ||
-            state.uri.path.startsWith('/forgot-password');
+        final path = state.uri.path;
 
-        // Redirect to login if not authenticated and not on auth route
+        final isAuthRoute =
+            path.startsWith('/login') || path.startsWith('/forgot-password');
+        final isPublicRoute = path.startsWith('/landing') ||
+            path.startsWith('/privacy-policy') ||
+            path.startsWith('/terms-of-service');
+
+        // Allow public routes
+        if (isPublicRoute) {
+          if (isAuthenticated && path == '/landing') {
+            return '/dashboard'; // Redirect authenticated users to dashboard from landing
+          }
+          return null;
+        }
+
+        // Redirect to landing if not authenticated and not on auth route
         if (!isAuthenticated && !isAuthRoute) {
-          return '/login';
+          return '/landing';
         }
 
         // Redirect to dashboard if authenticated and on auth route
@@ -55,6 +71,8 @@ class AppRouter {
       },
       refreshListenable: GoRouterRefreshStream(authBloc.stream),
       routes: [
+// ... imports
+
         // Auth routes (outside shell)
         GoRoute(
           path: '/login',
@@ -78,6 +96,29 @@ class AppRouter {
               ),
               child: const ForgotPasswordPage(),
             ),
+          ),
+        ),
+
+        // Public routes
+        GoRoute(
+          path: '/landing',
+          name: 'landing',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: LandingPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/privacy-policy',
+          name: 'privacy-policy',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: PrivacyPolicyPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/terms-of-service',
+          name: 'terms-of-service',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: TermsOfServicePage(),
           ),
         ),
 
@@ -421,7 +462,7 @@ class _NavItem extends StatelessWidget {
       ),
       child: Material(
         color: isSelected
-            ? AppColors.primaryColor.withOpacity(0.1)
+            ? AppColors.primaryColor.withValues(alpha: 0.1)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
