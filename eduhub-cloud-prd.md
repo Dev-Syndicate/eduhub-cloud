@@ -350,25 +350,55 @@ A single-window campus hub that:
 
 ## 6. Technical Architecture
 
-### 6.1 Frontend Stack
-- **Framework**: React 18+ / Next.js
-- **UI Library**: Material-UI or Tailwind CSS
-- **State Management**: Redux or Zustand
-- **HTTP Client**: Axios or Fetch API
-- **Real-time Updates**: Firebase Realtime Database listeners or Firestore snapshots
-- **Calendar Component**: React Big Calendar or FullCalendar
-- **Charts/Analytics**: Chart.js or Recharts
-- **Google Integration**: Google APIs Client Library (JavaScript)
+### 6.1 Frontend & Application Layer (Flutter Web)
+- *Framework*: Flutter (Web)
+- *Language*: Dart
+- *UI System*:
+  - Flutter Material 3 (Google Design System)
+  - Fully responsive layouts using LayoutBuilder and MediaQuery
 
-### 6.2 Backend Stack
-- **Framework**: FastAPI (Python) or Node.js + Express
-- **Database**: Firestore (Firebase)
-- **Authentication**: Firebase Authentication (Google OAuth for campus SSO)
-- **APIs**:
-  - Google Workspace APIs: Calendar, Docs, Sheets, Slides, Drive, Forms, Chat, Meet
-  - Gemini API (for AI-powered features like smart complaint summaries, event desc generation)
-- **Background Jobs**: Celery (Python) or Bull (Node.js) for async tasks (e.g., report generation, notifications)
-- **Deployment**: Firebase Hosting (Frontend) + Cloud Run / App Engine (Backend)
+- *State Management*:
+  - Riverpod (recommended)
+  - Bloc or Provider (alternatives)
+
+- *Routing & Navigation*:
+  - go_router for web-friendly routing and deep linking
+
+- *HTTP & API Communication*:
+  - Dart http or dio package
+  - Direct REST calls to Google APIs
+
+- *Real-time Data & Sync*:
+  - Firebase Firestore streams
+  - Firebase Realtime Database listeners
+
+- *Calendar & Scheduling*:
+  - syncfusion_flutter_calendar
+  - table_calendar
+
+- *Charts & Analytics*:
+  - fl_chart
+  - syncfusion_flutter_charts
+
+- *Forms & Validation*:
+  - Flutter Form and TextFormField
+  - flutter_form_builder
+
+---
+### 6.2 Google Ecosystem Integrations
+
+- *Google Workspace APIs*:
+  - Calendar (events & scheduling)
+  - Drive (file management)
+  - Docs & Sheets (reports & records)
+  - Forms (surveys & feedback)
+  - Chat & Meet (communication)
+
+- *AI & Intelligence*:
+  - Gemini API
+    - Smart complaint summarization
+    - Event and announcement generation
+    - Automated insights and recommendations
 
 ### 6.3 Database Schema (Firestore)
 

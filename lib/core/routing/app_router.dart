@@ -3,6 +3,12 @@ import 'package:go_router/go_router.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/announcements/presentation/pages/announcements_page.dart';
 import '../../features/announcements/presentation/pages/calendar_page.dart';
+import '../../features/events/presentation/pages/events_page.dart';
+import '../../features/events/presentation/pages/event_detail_page.dart';
+import '../../features/events/presentation/pages/create_event_page.dart';
+import '../../features/complaints/presentation/pages/complaints_page.dart';
+import '../../features/complaints/presentation/pages/complaint_detail_page.dart';
+import '../../features/complaints/presentation/pages/submit_complaint_page.dart';
 import '../widgets/responsive_layout.dart';
 import '../theme/app_colors.dart';
 
@@ -47,7 +53,48 @@ class AppRouter {
               child: CalendarPage(),
             ),
           ),
+          // Events routes
+          GoRoute(
+            path: '/events',
+            name: 'events',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: EventsPage(),
+            ),
+          ),
+          // Complaints routes
+          GoRoute(
+            path: '/complaints',
+            name: 'complaints',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: ComplaintsPage(),
+            ),
+          ),
         ],
+      ),
+      // Routes outside shell (full-screen pages)
+      GoRoute(
+        path: '/events/create',
+        name: 'create-event',
+        builder: (context, state) => const CreateEventPage(),
+      ),
+      GoRoute(
+        path: '/events/:id',
+        name: 'event-detail',
+        builder: (context, state) => EventDetailPage(
+          eventId: state.pathParameters['id']!,
+        ),
+      ),
+      GoRoute(
+        path: '/complaints/submit',
+        name: 'submit-complaint',
+        builder: (context, state) => const SubmitComplaintPage(),
+      ),
+      GoRoute(
+        path: '/complaints/:id',
+        name: 'complaint-detail',
+        builder: (context, state) => ComplaintDetailPage(
+          complaintId: state.pathParameters['id']!,
+        ),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
@@ -89,6 +136,18 @@ class _MainShellState extends State<MainShell> {
       selectedIcon: Icons.calendar_month,
       label: 'Calendar',
       path: '/calendar',
+    ),
+    NavDestination(
+      icon: Icons.event_outlined,
+      selectedIcon: Icons.event,
+      label: 'Events',
+      path: '/events',
+    ),
+    NavDestination(
+      icon: Icons.support_agent_outlined,
+      selectedIcon: Icons.support_agent,
+      label: 'Complaints',
+      path: '/complaints',
     ),
   ];
 
