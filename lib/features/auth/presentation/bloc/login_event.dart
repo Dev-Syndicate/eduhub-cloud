@@ -32,3 +32,8 @@ class LoginPasswordChanged extends LoginEvent {
 class LoginSubmitted extends LoginEvent {
   const LoginSubmitted();
 }
+
+/// Event when Google login is submitted
+class LoginGoogleSubmitted extends LoginEvent {
+  const LoginGoogleSubmitted();
+}

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/models/event_model.dart';
 import '../../../../core/enums/event_status.dart';
 import '../../../../core/repositories/event_repository.dart';
+import '../../../../core/services/calendar_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/providers/mock_user_provider.dart';
@@ -117,13 +118,31 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
       await _repository.createEvent(event);
 
+      // Add to Google Calendar
+      try {
+        await CalendarService().addToCalendar(event);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  const Text('Event created and added to Google Calendar!'),
+              backgroundColor: AppColors.success,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  'Event created, but failed to add to Calendar: ${e.toString().replaceAll("Exception: ", "")}'),
+              backgroundColor: AppColors.warning,
+            ),
+          );
+        }
+      }
+
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Event created successfully!'),
-            backgroundColor: AppColors.success,
-          ),
-        );
         context.pop();
       }
     } catch (e) {
